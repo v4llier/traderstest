@@ -102,13 +102,17 @@ def program
   @total = 0
 
   puts "How many questions do you want?"
+  puts
   @number_questions = gets.chomp
 
   until @total == @number_questions.to_i
     @total += 1
     calculation
+
     puts "Question #{@total}/#{@number_questions.to_i}"
+    puts
     puts "#{@num1}" + " #{@operation} " + "#{@num2}"
+    puts
 
     puts answers(@answer)
 
@@ -159,7 +163,8 @@ def program
     puts puts
 
   end
-  puts "You got #{@right} answer(s) right"
+  @percentage = @right/@total*100
+  puts "You got #{@right} answer(s) (#{@percentage}%)"
 end
 
 program
