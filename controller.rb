@@ -30,7 +30,7 @@ end
 
 def dividable_pool
   mx = 200
-  @pairs = (1..mx/2).flat_map { |n| (1..mx/n).map { |m| [n, n*m] } }
+  @pairs = (2..mx/2).flat_map { |n| (2..mx/n).map { |m| [n, n*m] } }
 end
 
 def numbers_multiplier
