@@ -152,14 +152,13 @@ def program
           puts "wrong answer, the answer was #{@answer}"
           @wrong += 1
         end
-      when ! %w(1 2 3 4)
+      else
         puts "invalid command"
         calculation
     end
     @total = @right + @wrong
     # puts "right: #{@right}"
     # puts "wrong: #{@wrong}"
-    puts "Question: #{@total}"
     puts puts
 
   end
