@@ -39,8 +39,8 @@ def numbers_multiplier
 end
 
 def numbers
-  @num1 = rand(1..100)
-  @num2 = rand(1..100)
+  @num1 = rand(5..100)
+  @num2 = rand(5..100)
 end
 
 
