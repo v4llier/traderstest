@@ -1,24 +1,40 @@
 def operation
-  syms = [:+, :/, :-, :*, :+, :+, :-, :-]
+  # out of twenty question + appears 6 times, - 6 times, * 5 times, / 3 times
+  syms = [
+    :+, :+, :+, :+, :+, :+,
+    :-, :-, :-, :-, :-, :-,
+    :*, :*, :*, :*, :*,
+    :/, :/, :/,
+  ]
   @operation = syms.sample
 end
 
 def result(num1, num2)
   if @operation == :/
-    @result = num1/num2
+    @result = num1.fdiv(num2)
   else
     @result = num1.send(@operation, num2)
   end
 end
 
+def number_operator(num1, num2)
+
+end
+
 def calculation
   operation
   if @operation == :/
-    dividable_pool
-    @dividable_numbers = @pairs.sample
-    @num1 = @dividable_numbers[1]
-    @num2 = @dividable_numbers[0]
-    result(@num1,@num2)
+    @division_calculus = rand(1..5)
+    if @division_calculus < 3
+      dividable_pool
+      @dividable_numbers = @pairs.sample
+      @num1 = @dividable_numbers[1]
+      @num2 = @dividable_numbers[0]
+      result(@num1,@num2)
+    else
+      decimal_numbers_choice
+      result(@num1,@num2)
+    end
   elsif @operation == :*
     decimal_numbers_choice
     result(@num1,@num2)
@@ -33,23 +49,51 @@ def dividable_pool
   @pairs = (2..mx/2).flat_map { |n| (2..mx/n).map { |m| [n, n*m] } }
 end
 
+def division_pairs
+  @pairs = [
+    [@num_cent_a,@num_deci_a],
+    [@num_deci_b,@num_deci_a],
+    [@num_unit_a,@num_centi],
+    [@num_centi_lg,@num_unit_b],
+    [@num_unit_a,@num_milli_uniq],
+    [@num_centi,@num_deci_b],
+    [@num_milli_uniq,@num_centi_uniq],
+    [@num_centi_uniq,@num_deci_b],
+    [@num_unit_b,@num_deci_a],
+    [@num_deci_lg,@num_deci_divided_100],
+    [@num_deci_lg,@num_deci_divided_200],
+    [@num_deci_lg,@num_deci_divided_50],
+    [@num_unit_a,@num_unit_b]
+  ]
+  @pairs_choice = @pairs.sample
+  @num1 = @pairs_choice[0]
+  @num2 = @pairs_choice[1]
+end
+
+def multiplication_pairs
+  @pairs = [
+    [@num_cent_a,@num_cent_b],
+    [@num_cent_a,@num_deca_a],
+    [@num_cent_b,@num_deci_a],
+    [@num_cent_b,@num_deci_lg],
+    [@num_deca_b,@num_deci_b],
+    [@num_deca_a,@num_deca_b],
+    [@num_unit_a,@num_centi],
+    [@num_unit_b,@num_centi_lg],
+    [@num_unit_a,@num_deci_lg]
+  ]
+  @pairs_choice = @pairs.sample
+  @num1 = @pairs_choice[0]
+  @num2 = @pairs_choice[1]
+end
+
 def decimal_numbers_choice
   numbers
   if @operation == :*
-    @pairs = [
-      [@num_cent_a,@num_cent_b],
-      [@num_cent_a,@num_deca_a],
-      [@num_cent_b,@num_deci_a],
-      [@num_cent_b,@num_deci_lg],
-      [@num_deca_b,@num_deci_b],
-      [@num_deca_a,@num_deca_b],
-      [@num_unit_a,@num_centi],
-      [@num_unit_b,@num_centi_lg],
-      [@num_unit_a,@num_deci_lg]
-    ]
-    @pairs_choice = @pairs.sample
-    @num1 = @pairs_choice[0]
-    @num2 = @pairs_choice[1]
+    multiplication_pairs
+
+  elsif @operation == :/
+    division_pairs
   else
     @num1 = @numbers.sample
     @num2 = @numbers.sample
@@ -73,9 +117,14 @@ def numbers
   @num_deci_lg = rand(0.1..50).round(1)
   @num_deci_a = rand(0.1..0.9).round(1)
   @num_deci_b = rand(0.1..0.9).round(1)
+  @num_centi_uniq = rand(0.01..0.09).round(2)
+  @num_milli_uniq = rand(0.001..0.009).round(3)
   @num_milli_lg = rand(0.001..15).round(3)
   @num_centi_lg = rand(0.01..30).round(2)
   @num_centi = rand(0.01..0.99).round(2)
+  @num_deci_divided_100 = (@num_deci_lg/100).round(3)
+  @num_deci_divided_200 = (@num_deci_lg/200).round(3)
+  @num_deci_divided_50 = (@num_deci_lg/50).round(3)
 
   @numbers = [
   @num_cent_a,
@@ -88,8 +137,10 @@ def numbers
   @num_deci_a,
   @num_deci_b,
   @num_milli_lg,
+  @num_milli_uniq,
   @num_centi_lg,
   @num_centi,
+  @num_centi_uniq
   ]
 end
 
@@ -170,7 +221,7 @@ def program
             # puts "Perfect!"
             @right += 1
           else
-            # puts "wrong answer, the answer was #{@answer}"
+            puts "wrong answer, the answer was #{@answer}"
             @wrong += 1
           end
 
@@ -179,7 +230,7 @@ def program
             # puts "Perfect!"
             @right += 1
           else
-            # puts "wrong answer, the answer was #{@answer}"
+            puts "wrong answer, the answer was #{@answer}"
             @wrong += 1
           end
         when 3
@@ -187,7 +238,7 @@ def program
             # puts "Perfect!"
             @right += 1
           else
-            # puts "wrong answer, the answer was #{@answer}"
+            puts "wrong answer, the answer was #{@answer}"
             @wrong += 1
           end
         when 4
@@ -195,7 +246,7 @@ def program
             # puts "Perfect!"
             @right += 1
           else
-            # puts "wrong answer, the answer was #{@answer}"
+            puts "wrong answer, the answer was #{@answer}"
             @wrong += 1
           end
         when 0
@@ -205,6 +256,7 @@ def program
           calculation
       end
       @total = @right + @wrong
+      # puts "#{@answer}"
       puts puts
 
     end
@@ -215,13 +267,14 @@ def program
   @score = @right * 1 - @wrong * 2
   @passing_rate = 0.6875 * @total
 
-  puts "Your score is #{@score}(out of #{@total})"
+  puts "Your score is #{@score} (max score is #{@total})"
   if @score > @passing_rate
     puts "You passed"
   else
-    puts "You failed you needed at least a score of #{@passing_rate}"
+    puts "You failed you needed at least a score of #{@passing_rate.round(0)}"
   end
 end
 
 program
+
 
