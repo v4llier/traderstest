@@ -5,11 +5,9 @@ end
 
 def result(num1, num2)
   if @operation == :/
-    @answer = num1/num2
-    @answer.round(3)
+    @result = num1/num2
   else
-    @answer = num1.send(@operation, num2)
-    @answer.round(3)
+    @result = num1.send(@operation, num2)
   end
 end
 
@@ -95,50 +93,31 @@ def numbers
   ]
 end
 
-
-# def number_alpha
-#   @alpha = rand(1..100)
-# end
-
-# def number_beta
-#   @beta = rand(1..100)
-# end
-
-# def answer
-#   if @operation == :/
-#     @answer = @alpha.send(@operation, @beta)
-
-#   else
-#     @answer = @alpha.send(@operation, @beta)
-#   end
-
-# end
-
 def answers(answer)
-  @answer = answer
+  @answer = answer.round(3)
   @choice = rand(1..4)
   if @choice == 1
     @choice_one = @answer
   else
-    @choice_one = @answer + rand(1..10)
+    @choice_one = (@answer + rand(1..10)).round(3)
   end
 
   if @choice == 2
     @choice_two = @answer
   else
-    @choice_two = @answer - rand(1..10)
+    @choice_two = (@answer - rand(1..10)).round(3)
   end
 
   if @choice == 3
     @choice_three = @answer
   else
-    @choice_three = @answer + rand(1..10)
+    @choice_three = (@answer + rand(1..10)).round(3)
   end
 
   if @choice == 4
     @choice_four = @answer
   else
-    @choice_four = (@answer * rand(0.5..1.5)).round(0)
+    @choice_four = (@answer * rand(0.5..1.5)).round(1)
   end
 
 
@@ -166,7 +145,7 @@ def program
     puts "#{@num1}" + " #{@operation} " + "#{@num2}"
     puts
 
-    puts answers(@answer)
+    puts answers(@result)
 
     @input = gets.chomp.to_i
 
@@ -209,8 +188,6 @@ def program
         calculation
     end
     @total = @right + @wrong
-    # puts "right: #{@right}"
-    # puts "wrong: #{@wrong}"
     puts puts
 
   end
