@@ -127,74 +127,100 @@ def answers(answer)
   puts "4. #{@choice_four}"
 end
 
+def introduction
+  puts "How many questions do you want? (10 = 1min, 20 = 2min, etc.)"
+  puts
+  @number_questions = gets.chomp
+  puts
+  @time_seconds = @number_questions.to_i * 6
+  @time_minutes = (@time_seconds.fdiv(60)).round(1)
+  puts "This is a multiple choice assessment aim to test whether you have enough arithmetic skills to be a trader."
+  puts "Set a timer to #{@time_seconds}sec (#{@time_minutes}min)."
+  puts %Q(You answer with the keys "1" "2" "3" or "4". When the time is over, answer the key \"0\")
+  puts
+  puts "To continue press \'ENTER\'"
+end
+
 def program
   @right = 0
   @wrong = 0
+  @na = 0
   @total = 0
 
-  puts "How many questions do you want?"
-  puts
-  @number_questions = gets.chomp
+  introduction
 
-  until @total == @number_questions.to_i
-    @total += 1
-    calculation
+  @key_pressed = gets.chomp
 
-    puts "Question #{@total}/#{@number_questions.to_i}"
-    puts
-    puts "#{@num1}" + " #{@operation} " + "#{@num2}"
-    puts
+    until @total == @number_questions.to_i
+      @total += 1
+      calculation
 
-    puts answers(@result)
+      puts "Question #{@total}/#{@number_questions.to_i}"
+      puts
+      puts "#{@num1}" + " #{@operation} " + "#{@num2}"
+      puts
 
-    @input = gets.chomp.to_i
+      puts answers(@result)
 
-    case @input
-      when 1
-        if @choice_one == @answer
-          puts "Perfect!"
-          @right += 1
+      @input = gets.chomp.to_i
+
+      case @input
+        when 1
+          if @choice_one == @answer
+            # puts "Perfect!"
+            @right += 1
+          else
+            # puts "wrong answer, the answer was #{@answer}"
+            @wrong += 1
+          end
+
+        when 2
+          if @choice_two == @answer
+            # puts "Perfect!"
+            @right += 1
+          else
+            # puts "wrong answer, the answer was #{@answer}"
+            @wrong += 1
+          end
+        when 3
+          if @choice_three == @answer
+            # puts "Perfect!"
+            @right += 1
+          else
+            # puts "wrong answer, the answer was #{@answer}"
+            @wrong += 1
+          end
+        when 4
+          if @choice_four == @answer
+            # puts "Perfect!"
+            @right += 1
+          else
+            # puts "wrong answer, the answer was #{@answer}"
+            @wrong += 1
+          end
+        when 0
+            @na += 0
         else
-          puts "wrong answer, the answer was #{@answer}"
-          @wrong += 1
-        end
+          puts "invalid command"
+          calculation
+      end
+      @total = @right + @wrong
+      puts puts
 
-      when 2
-        if @choice_two == @answer
-          puts "Perfect!"
-          @right += 1
-        else
-          puts "wrong answer, the answer was #{@answer}"
-          @wrong += 1
-        end
-      when 3
-        if @choice_three == @answer
-          puts "Perfect!"
-          @right += 1
-        else
-          puts "wrong answer, the answer was #{@answer}"
-          @wrong += 1
-        end
-      when 4
-        if @choice_four == @answer
-          puts "Perfect!"
-          @right += 1
-        else
-          puts "wrong answer, the answer was #{@answer}"
-          @wrong += 1
-        end
-      else
-        puts "invalid command"
-        calculation
     end
-    @total = @right + @wrong
-    puts puts
-
-  end
   @right
   @percentage = (@right.fdiv(@total) * 100).round(0)
 
   puts "You got #{@right} answer(s) right (#{@percentage}%)"
+  @score = @right * 1 - @wrong * 2
+  @passing_rate = 0.6875 * @total
+
+  puts "Your score is #{@score}(out of #{@total})"
+  if @score > @passing_rate
+    puts "You passed"
+  else
+    puts "You failed you needed at least a score of #{@passing_rate}"
+  end
 end
 
 program
