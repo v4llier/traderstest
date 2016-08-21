@@ -18,7 +18,22 @@ def result(num1, num2)
 end
 
 def number_operator(num1, num2)
-
+  @random_choices = %w(1 2 3 4)
+  @random = @random_choices.sample.to_i
+  if @random == 1
+    @num1 = num1
+    @num2 = num2
+  elsif @random == 2
+    @num1 = -num1
+    @num2 = -num2
+  elsif @random == 3
+    @num1 = -num1
+    @num2 = num2
+  else
+    @num1 = num1
+    @num2 = -num2
+  end
+  result(@num1,@num2)
 end
 
 def calculation
@@ -30,17 +45,17 @@ def calculation
       @dividable_numbers = @pairs.sample
       @num1 = @dividable_numbers[1]
       @num2 = @dividable_numbers[0]
-      result(@num1,@num2)
+      number_operator(@num1,@num2)
     else
       decimal_numbers_choice
-      result(@num1,@num2)
+      number_operator(@num1,@num2)
     end
   elsif @operation == :*
     decimal_numbers_choice
-    result(@num1,@num2)
+    number_operator(@num1,@num2)
   else
     decimal_numbers_choice
-    result(@num1,@num2)
+    number_operator(@num1,@num2)
   end
 end
 
