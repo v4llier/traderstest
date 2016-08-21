@@ -123,6 +123,8 @@ end
 # end
 
 def numbers
+  @num_mille_a = rand(50..9999)
+  @num_mille_b = rand(50..9999)
   @num_cent_a = rand(5..100)
   @num_cent_b = rand(5..100)
   @num_unit_a = rand(2..10)
@@ -156,6 +158,8 @@ def numbers
   @num_centi_lg,
   @num_centi,
   @num_centi_uniq
+  @num_mille_b
+  @num_mille_b
   ]
 end
 
