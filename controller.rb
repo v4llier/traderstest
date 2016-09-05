@@ -15,6 +15,7 @@ def result(num1, num2)
   else
     @result = num1.send(@operation, num2)
   end
+
 end
 
 def number_operator(num1, num2)
@@ -36,16 +37,16 @@ def number_operator(num1, num2)
   result(@num1,@num2)
 end
 
+
 def calculation
   operation
   if @operation == :/
     @division_calculus = rand(1..5)
-    if @division_calculus < 3
+    if @division_calculus < 0
       dividable_pool
       @dividable_numbers = @pairs.sample
       @num1 = @dividable_numbers[1]
       @num2 = @dividable_numbers[0]
-      number_operator(@num1,@num2)
     else
       decimal_numbers_choice
       number_operator(@num1,@num2)
@@ -64,26 +65,44 @@ def dividable_pool
   @pairs = (2..mx/2).flat_map { |n| (2..mx/n).map { |m| [n, n*m] } }
 end
 
-def division_pairs
-  @pairs = [
-    [@num_cent_a,@num_deci_a],
-    [@num_deci_b,@num_deci_a],
-    [@num_unit_a,@num_centi],
-    [@num_centi_lg,@num_unit_b],
-    [@num_unit_a,@num_milli_uniq],
-    [@num_centi,@num_deci_b],
-    [@num_milli_uniq,@num_centi_uniq],
-    [@num_centi_uniq,@num_deci_b],
-    [@num_unit_b,@num_deci_a],
-    [@num_deci_lg,@num_deci_divided_100],
-    [@num_deci_lg,@num_deci_divided_200],
-    [@num_deci_lg,@num_deci_divided_50],
-    [@num_unit_a,@num_unit_b]
+def dividable_numbers
+  @dividable_numbers = [
+    @num_cent_a,
+    @num_deci_a,
+    @num_deci_b,
+    @num_unit_a,
+    @num_unit_b,
+    @num_centi,
+    @num_centi_lg,
+    @num_milli_uniq,
+    @num_centi_uniq,
   ]
-  @pairs_choice = @pairs.sample
-  @num1 = @pairs_choice[0]
-  @num2 = @pairs_choice[1]
+  num1 = @dividable_numbers.sample
+  num2 = @dividable_numbers.sample
+  @num2 = num1.round(3)
+  @num1 = (num1 * num2).round(3)
 end
+
+# def division_pairs
+#   @pairs = [
+#     [@num_cent_a,@num_deci_a],
+#     [@num_deci_b,@num_deci_a],
+#     [@num_unit_a,@num_centi],
+#     [@num_centi_lg,@num_unit_b],
+#     [@num_unit_a,@num_milli_uniq],
+#     [@num_centi,@num_deci_b],
+#     [@num_milli_uniq,@num_centi_uniq],
+#     [@num_centi_uniq,@num_deci_b],
+#     [@num_unit_b,@num_deci_a],
+#     [@num_deci_lg,@num_deci_divided_100],
+#     [@num_deci_lg,@num_deci_divided_200],
+#     [@num_deci_lg,@num_deci_divided_50],
+#     [@num_unit_a,@num_unit_b]
+#   ]
+#   @pairs_choice = @pairs.sample
+#   @num1 = @pairs_choice[0]
+#   @num2 = @pairs_choice[1]
+# end
 
 def multiplication_pairs
   @pairs = [
@@ -108,7 +127,8 @@ def decimal_numbers_choice
     multiplication_pairs
 
   elsif @operation == :/
-    division_pairs
+    # division_pairs
+    dividable_numbers
   else
     @num1 = @numbers.sample
     @num2 = @numbers.sample
@@ -157,11 +177,12 @@ def numbers
   @num_milli_uniq,
   @num_centi_lg,
   @num_centi,
-  @num_centi_uniq
-  @num_mille_b
-  @num_mille_b
+  @num_centi_uniq,
+  @num_mille_b,
+  @num_mille_b,
   ]
 end
+
 
 def answers(answer)
   @answer = answer.round(3)
@@ -243,7 +264,6 @@ def program
             puts "wrong answer, the answer was #{@answer}"
             @wrong += 1
           end
-
         when 2
           if @choice_two == @answer
             # puts "Perfect!"
@@ -269,10 +289,11 @@ def program
             @wrong += 1
           end
         when 0
-            @na += 0
+          @na += 1
+          puts "you passed this question"
         else
-          puts "invalid command"
-          calculation
+          puts "Wrong command please try again"
+
       end
       @total = @right + @wrong
       # puts "#{@answer}"
@@ -280,7 +301,13 @@ def program
 
     end
   @right
+  @na
   @percentage = (@right.fdiv(@total) * 100).round(0)
+
+  puts %Q(not answered: #{@na})
+  puts %Q(right: #{@right})
+  puts %Q(wrong: #{@wrong})
+  puts
 
   puts "You got #{@right} answer(s) right (#{@percentage}%)"
   @score = @right * 1 - @wrong * 2
