@@ -227,7 +227,7 @@ def introduction
   @time_minutes = (@time_seconds.fdiv(60)).round(1)
   puts "This is a multiple choice assessment aim to test whether you have enough arithmetic skills to be a trader."
   puts "Set a timer to #{@time_seconds}sec (#{@time_minutes}min)."
-  puts %Q(You answer with the keys "1" "2" "3" or "4". When the time is over, answer the key \"0\")
+  puts %Q(You answer with the keys "1" "2" "3" or "4". When the time is over, press ENTER)
   puts
   puts "To continue press \'ENTER\'"
 end
@@ -295,7 +295,7 @@ def program
           puts "Wrong command please try again"
 
       end
-      @total = @right + @wrong
+      @total = @right + @wrong + @na
       # puts "#{@answer}"
       puts puts
 
