@@ -11,9 +11,9 @@ end
 
 def result(num1, num2)
   if @operation == :/
-    @result = num1.fdiv(num2)
+    @result = (num1.fdiv(num2)).round(3)
   else
-    @result = num1.send(@operation, num2)
+    @result = (num1.send(@operation, num2)).round(3)
   end
 
 end
@@ -35,6 +35,7 @@ def number_operator(num1, num2)
     @num2 = -num2
   end
   result(@num1,@num2)
+  wrong_answers
 end
 
 
@@ -103,6 +104,9 @@ end
 #   @num1 = @pairs_choice[0]
 #   @num2 = @pairs_choice[1]
 # end
+
+
+
 
 def multiplication_pairs
   @pairs = [
@@ -183,32 +187,138 @@ def numbers
   ]
 end
 
+def define_last_number
+  if @decimals <= 1 && @result.to_s[/\d$/] == "0"
+    @result.to_s[/\d(?=\.\w+)/]
+  else
+    @result.to_s[/\d$/]
+  end
+end
+
+def last_number_check(answer,result)
+  if @decimals <= 1 && result.to_s[/\d$/] == "0"
+    (answer.to_s[/\d(?=\.\w+)/] == result.to_s[/\d(?=\.\w+)/]) && (answer.to_s[/\d$/] == result.to_s[/\d$/])
+  else
+    (answer.to_s[/\d$/] == result.to_s[/\d$/])
+  end
+end
+
+def decimal_size
+  @result.to_s.split('.').last.size
+end
+
+
+def wrong_answers
+  p @num1
+  p @num2
+  @decimals = decimal_size
+  p @decimals
+  p @result
+  if @operation == :+
+    @wrong_answer_one = (@num1 - @num2).round(3)
+    @wrong_answer_two = - @result.round(3)
+    @wrong_answer_three = - @wrong_answer_one.round(3)
+    # @wrong_answers = [@wrong_answer_one, @wrong_answer_two, @wrong_answer_three]
+  elsif @operation == :-
+    @wrong_answer_one = (@num1 + @num2).round(3)
+    @wrong_answer_two = - @result.round(3)
+    @wrong_answer_three = - @wrong_answer_one.round(3)
+    # @wrong_answers = [@wrong_answer_one, @wrong_answer_two, @wrong_answer_three]
+  else
+     if @result.to_s[/.\./] == "0." && @result.to_s.size == 3
+      @wrong_answer_one = (@result + rand(1..10)).round(@decimals)
+      @wrong_answer_two = (@result + rand(1..10)).round(@decimals)
+        until @wrong_answer_two != @wrong_answer_ones
+          @wrong_answer_two = (@result + rand(1..10)).round(@decimals)
+        end
+      @wrong_answer_three = (@result + rand(1..10)).round(@decimals)
+        until @wrong_answer_three != @wrong_answer_ones && @wrong_answer_three != @wrong_answer_two
+          @wrong_answer_three = (@result + rand(1..10)).round(@decimals)
+        end
+    elsif @result.to_s[/.\./] == "0." && @result.to_s.size == 4 && @result.to_s[/-/] == "-"
+      @wrong_answer_one = (@result - rand(1..3)).round(@decimals)
+      @wrong_answer_two = (@result - rand(1..5)).round(@decimals)
+        until @wrong_answer_two != @wrong_answer_one
+          @wrong_answer_two = (@result - rand(1..5)).round(@decimals)
+        end
+      @wrong_answer_three = (@result - rand(1..6)).round(@decimals)
+        until @wrong_answer_three != @wrong_answer_one && @wrong_answer_three != @wrong_answer_two
+          @wrong_answer_three = (@result - rand(1..6)).round(@decimals)
+        end
+      @second = 4
+
+    elsif (@result.abs > 11) ||
+        (@decimals > 1) ||
+        (@result.to_s.size == 3 && @result.to_s[/\d$/] != "0") ||
+        (@result.to_s.size == 4 && @result.to_s[/-/] == "-" && @result.to_s[/\d$/] != "0")
+      @wrong_answer_one = (@result * rand(0.95..1.05)).round(@decimals)
+        until @wrong_answer_one != @result && last_number_check(@wrong_answer_one,@result) && @decimals == @wrong_answer_one.to_s.split('.').last.size
+          @wrong_answer_one = (@result * rand(0.1..2.4)).round(@decimals)
+        end
+      @wrong_answer_two = (@result * rand(0.95..1.05)).round(@decimals)
+      until (@wrong_answer_two != @result) &&
+          (last_number_check(@wrong_answer_two,@result)) &&
+          (@decimals == @wrong_answer_two.to_s.split('.').last.size) &&
+          (@wrong_answer_two != @wrong_answer_one)
+        @wrong_answer_two = (@result * rand(0.1..2.4)).round(@decimals)
+      end
+      @wrong_answer_three = (@result * rand(0.95..1.05)).round(@decimals)
+      until (@wrong_answer_three != @result) &&
+          (last_number_check(@wrong_answer_three,@result)) &&
+          (@decimals == @wrong_answer_three.to_s.split('.').last.size) &&
+          (@wrong_answer_three != @wrong_answer_two) &&
+          (@wrong_answer_three != @wrong_answer_one)
+        @wrong_answer_three = (@result * rand(0.1..2.4)).round(@decimals)
+      end
+
+    else
+      @wrong_answer_one = (@result + rand(1..10)).round(@decimals)
+      @wrong_answer_two = (@result - rand(1..10)).round(@decimals)
+      @wrong_answer_three = (@result + rand(1..10)).round(@decimals)
+        until @wrong_answer_three != @wrong_answer_one
+          @wrong_answer_three = (@result + rand(1..10)).round(@decimals)
+        end
+    end
+  end
+  @wrong_answers = [@wrong_answer_one, @wrong_answer_two, @wrong_answer_three]
+  p @wrong_answers
+end
 
 def answers(answer)
   @answer = answer.round(3)
   @choice = rand(1..4)
+
   if @choice == 1
     @choice_one = @answer
   else
-    @choice_one = (@answer + rand(1..10)).round(3)
+    @choice_one = @wrong_answers.sample
   end
 
   if @choice == 2
     @choice_two = @answer
   else
-    @choice_two = (@answer - rand(1..10)).round(3)
+    @choice_two = @wrong_answers.sample
+    until @choice_two != @choice_one
+      @choice_two = @wrong_answers.sample
+    end
   end
 
   if @choice == 3
     @choice_three = @answer
   else
-    @choice_three = (@answer + rand(1..10)).round(3)
+    @choice_three = @wrong_answers.sample
+    until @choice_three != @choice_one && @choice_three != @choice_two
+      @choice_three = @wrong_answers.sample
+    end
   end
 
   if @choice == 4
     @choice_four = @answer
   else
-    @choice_four = (@answer * rand(0.5..1.5)).round(1)
+    @choice_four = @wrong_answers.sample
+    until @choice_four != @choice_one && @choice_four != @choice_two && @choice_four != @choice_three
+      @choice_four = @wrong_answers.sample
+    end
   end
 
 
@@ -216,6 +326,7 @@ def answers(answer)
   puts "2. #{@choice_two}"
   puts "3. #{@choice_three}"
   puts "4. #{@choice_four}"
+
 end
 
 def introduction
@@ -322,5 +433,7 @@ def program
 end
 
 program
+p @num1
+p @num2
 
 
