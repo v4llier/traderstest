@@ -209,11 +209,7 @@ end
 
 
 def wrong_answers
-  p @num1
-  p @num2
   @decimals = decimal_size
-  p @decimals
-  p @result
   if @operation == :+
     @wrong_answer_one = (@num1 - @num2).round(3)
     @wrong_answer_two = - @result.round(3)
@@ -338,7 +334,6 @@ def wrong_answers
     end
   end
   @wrong_answers = [@wrong_answer_one, @wrong_answer_two, @wrong_answer_three]
-  p @wrong_answers
 end
 
 def answers(answer)
@@ -490,7 +485,6 @@ def program
 end
 
 program
-p @num1
-p @num2
+
 
 
