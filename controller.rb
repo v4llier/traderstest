@@ -269,7 +269,7 @@ def wrong_answers
       end
 
     elsif (@result.to_s[/\.0?0/] == ".0" || @result.to_s[/\.0?0/] == ".00") &&
-        (@result.to_s[/.\./] == "0.")
+        (@result.to_s[/^./] == "0")
       @wrong_answer_one = (@result * rand(0.1..20.2))
       until
           (@wrong_answer_one != @result) &&
@@ -295,7 +295,7 @@ def wrong_answers
         @wrong_answer_three = (@result * rand(0.1..20.2)).round(@decimals)
       end
 
-    elsif (@result.abs > 11) ||
+    elsif (@result.abs > 16) ||
         (@decimals > 1) ||
         (@result.to_s.size == 3 && @result.to_s[/\d$/] != "0") ||
         (@result.to_s.size == 4 && @result.to_s[/-/] == "-" && @result.to_s[/\d$/] != "0")
@@ -325,11 +325,11 @@ def wrong_answers
       end
 
     else
-      @wrong_answer_one = (@result + rand(1..10)).round(@decimals)
-      @wrong_answer_two = (@result - rand(1..10)).round(@decimals)
-      @wrong_answer_three = (@result + rand(1..10)).round(@decimals)
+      @wrong_answer_one = (@result + rand(1..6)).round(@decimals)
+      @wrong_answer_two = (@result - rand(1..7)).round(@decimals)
+      @wrong_answer_three = (@result + rand(1..8)).round(@decimals)
         until @wrong_answer_three != @wrong_answer_one
-          @wrong_answer_three = (@result + rand(1..10)).round(@decimals)
+          @wrong_answer_three = (@result + rand(1..8)).round(@decimals)
         end
     end
   end
