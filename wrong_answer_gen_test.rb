@@ -1,7 +1,7 @@
     test_round = [1,2,3]
 
     # @result = -rand(0.1..100).round(test_round.sample)
-    @result = - 5.0
+    @result = 15.0
     p @result.to_s.size
 
     p @result.to_s.split('.').last.size
@@ -90,7 +90,7 @@
       end
 
     elsif (@result.to_s[/\.0?0/] == ".0" || @result.to_s[/\.0?0/] == ".00") &&
-      (@result.to_s[/.\./] == "0.")
+      (@result.to_s[/^./] == "0")
        p 3.5
       @answer = (@result * rand(0.1..20.2))
         until @answer != @result && last_number_check(@answer,@result) && @decimals == @answer.to_s.split('.').last.size
@@ -107,31 +107,31 @@
 
 
 
-    elsif (@result.abs > 11) ||
+    elsif (@result.abs > 16) ||
       (@decimals > 1) ||
       (@result.to_s.size == 3 && @result.to_s[/\d$/] != "0") ||
       (@result.to_s.size == 4 && @result.to_s[/-/] == "-" && @result.to_s[/\d$/] != "0")
       @answer = (@result * rand(0.95..1.05)).round(@decimals)
       p 3
         until @answer != @result && last_number_check(@answer,@result) && @decimals == @answer.to_s.split('.').last.size
-          @answer = (@result * rand(0.1..3.2)).round(@decimals)
+          @answer = (@result * rand(0.1..2.2)).round(@decimals)
         end
       @answer2 = (@result * rand(0.95..1.05)).round(@decimals)
       until @answer2 != @result && last_number_check(@answer2,@result) && @decimals == @answer2.to_s.split('.').last.size && @answer2 != @answer
-        @answer2 = (@result * rand(0.1..3.2)).round(@decimals)
+        @answer2 = (@result * rand(0.1..2.2)).round(@decimals)
       end
       @answer3 = (@result * rand(0.95..1.05)).round(@decimals)
       until @answer3 != @result && last_number_check(@answer3,@result) && @decimals == @answer3.to_s.split('.').last.size && @answer3 != @answer2 && @answer3 != @answer
-        @answer3 = (@result * rand(0.1..3.2)).round(@decimals)
+        @answer3 = (@result * rand(0.1..2.2)).round(@decimals)
       end
 
     else
       p 4
-      @answer = (@result + rand(1..10)).round(@decimals)
-      @answer2 = (@result - rand(1..10)).round(@decimals)
-      @answer3 = (@result + rand(1..10)).round(@decimals)
+      @answer = (@result + rand(1..8)).round(@decimals)
+      @answer2 = (@result - rand(1..7)).round(@decimals)
+      @answer3 = (@result + rand(1..5)).round(@decimals)
         until @answer3 != @answers
-          @answer3 = (@result + rand(1..10)).round(@decimals)
+          @answer3 = (@result + rand(1..6)).round(@decimals)
         end
 
 
